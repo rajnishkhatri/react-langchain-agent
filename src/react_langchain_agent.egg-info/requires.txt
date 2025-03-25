@@ -1,5 +1,0 @@
-langchain
-openai
-python-dotenv
-black
-langchain-openai
