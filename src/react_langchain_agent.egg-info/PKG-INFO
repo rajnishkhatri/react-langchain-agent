@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: react_langchain_agent
+Version: 0.1.0
+Requires-Python: >=3.9
+Requires-Dist: langchain
+Requires-Dist: openai
+Requires-Dist: python-dotenv
+Requires-Dist: black
+Requires-Dist: langchain-openai
+Dynamic: requires-dist
+Dynamic: requires-python

@@ -42,7 +42,18 @@ agent = (
 
 ### For AI Solution Architects 🏗️
 This project serves as a foundation for:
-- **Modular AI System Design**: Demonstrates separation of concerns between agent logic, tools, and monitoring
+- **Modular AI System Design**: 
+  ```
+  react_langchain_agent/
+  ├── src/
+  │   └── react_langchain_agent/
+  │       ├── config/        # Configuration management
+  │       ├── core/         # Core agent functionality
+  │       ├── tools/        # Tool implementations
+  │       └── utils/        # Utility functions
+  ├── tests/               # Test files
+  └── setup.py            # Package installation
+  ```
 - **Scalable Architecture**: 
   - Tool registration pattern for easy extension
   - Callback system for monitoring and logging
@@ -75,10 +86,33 @@ This implementation provides a framework for:
 
 ## Features
 
-- ReAct pattern implementation using LangChain
-- Custom tool implementation (text length calculator)
-- Environment variable management
-- Custom callback handler for monitoring LLM interactions
+### Core Components
+1. **Configuration Management** (`config/settings.py`):
+   ```python
+   class Settings:
+       OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+       TEMPERATURE: float = 0.0
+       STOP_SEQUENCES: list[str] = ["\nObservation", "Observation"]
+   ```
+
+2. **Agent Implementation** (`core/agent.py`):
+   - ReAct pattern implementation
+   - Tool management
+   - State handling
+   - Error management
+
+3. **Tools** (`tools/text_tools.py`):
+   ```python
+   @tool
+   def get_text_length(text: str) -> int:
+       """Returns the length of a text by characters."""
+       return len(text.strip())
+   ```
+
+4. **Monitoring** (`utils/callbacks.py`):
+   - LLM interaction tracking
+   - Error logging
+   - Performance monitoring
 
 ## Setup
 
@@ -105,58 +139,90 @@ pipenv run python main.py
 
 ## Project Structure
 
-- `main.py`: Main application file implementing the LangChain agent
-  - ReAct pattern implementation
-  - Tool registration and management
-  - Agent configuration and execution
-- `callbacks.py`: Custom callback handler for monitoring LLM interactions
-  - Tracks prompts and responses
-  - Provides debugging information
-- `Pipfile` & `Pipfile.lock`: Dependency management files
-- `requirements.txt`: Alternative dependency specification
-
-## Dependencies
-
-- langchain: Framework for developing LLM applications
-- openai: OpenAI API client library
-- python-dotenv: Environment variable management
-- black: Code formatting
-
-## Example Usage
-
-```python
-# Input: "What is the length of the word: rajnish khatri"
-# Output:
-Thought: I should use the get_text_length function to find the length of the given text.
-Action: get_text_length
-Action Input: "rajnish khatri"
-Observation: 14
-Final Answer: The text "rajnish khatri" has 14 characters
+```
+react_langchain_agent/
+├── src/
+│   └── react_langchain_agent/
+│       ├── config/
+│       │   ├── __init__.py
+│       │   └── settings.py        # Configuration management
+│       ├── core/
+│       │   ├── __init__.py
+│       │   ├── agent.py          # Agent implementation
+│       │   └── prompts.py        # Prompt templates
+│       ├── tools/
+│       │   ├── __init__.py
+│       │   └── text_tools.py     # Tool implementations
+│       └── utils/
+│           ├── __init__.py
+│           └── callbacks.py      # Monitoring utilities
+├── tests/
+│   ├── __init__.py
+│   └── test_tools.py            # Tool tests
+├── main.py                      # Entry point
+├── setup.py                     # Package configuration
+├── Pipfile                      # Dependencies
+└── README.md                    # Documentation
 ```
 
-## Future Extensions
+## Usage Examples
 
-1. **Additional Tools**:
-   - Text analysis tools
-   - Mathematical operations
-   - External API integrations
+### Basic Text Analysis
+```python
+from react_langchain_agent.core.agent import ReActAgent
+from react_langchain_agent.tools.text_tools import AVAILABLE_TOOLS
 
-2. **Enhanced Capabilities**:
-   - Memory management
-   - Multi-step reasoning
-   - Tool composition
+agent = ReActAgent(tools=AVAILABLE_TOOLS)
+result = agent.run("What is the length of the word: hello world")
+print(result)  # Output: {'output': '11'}
+```
 
-3. **Monitoring & Analysis**:
-   - Performance metrics
-   - Decision analysis
-   - Behavior patterns
+### Custom Tool Integration
+```python
+from langchain.agents import tool
+
+@tool
+def custom_tool(input: str) -> str:
+    """Custom tool description"""
+    return process(input)
+
+# Add to available tools
+AVAILABLE_TOOLS.append(custom_tool)
+```
+
+## Testing
+
+Run the tests using pytest:
+```bash
+pipenv run pytest
+```
+
+Current test coverage includes:
+- Tool functionality testing
+- Input validation
+- Edge case handling
+
+## Development
+
+### Adding New Tools
+1. Create tool in `tools/` directory
+2. Add `@tool` decorator
+3. Add to `AVAILABLE_TOOLS`
+4. Add corresponding tests
+
+### Configuration
+Modify `config/settings.py` for:
+- LLM parameters
+- API configurations
+- Environment variables
 
 ## Contributing
 
-Feel free to contribute by:
-1. Forking the repository
-2. Creating a feature branch
-3. Submitting a pull request
+1. Fork the repository
+2. Create a feature branch
+3. Implement changes
+4. Add tests
+5. Submit a pull request
 
 ## License
 
