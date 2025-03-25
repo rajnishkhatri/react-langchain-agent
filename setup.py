@@ -12,6 +12,7 @@ setup(
         "python-dotenv",
         "black",
         "langchain-openai",
+        "gradio>=4.0.0",
     ],
     python_requires=">=3.9",
 ) 

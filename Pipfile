@@ -9,6 +9,9 @@ openai = "*"
 black = "*"
 python-dotenv = "*"
 langchain-openai = "*"
+gradio = "*"
+langchain-community = "*"
+react-langchain-agent = {file = ".", editable = true}
 
 [dev-packages]
 

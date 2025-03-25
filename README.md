@@ -2,6 +2,24 @@
 
 A Python project that demonstrates the implementation of a LangChain agent using the ReAct (Reasoning + Acting) pattern. The agent can perform various tasks using tools, with the current implementation focusing on text analysis.
 
+## Quick Demo 🚀
+
+Try the interactive demo:
+
+```bash
+# Install the package
+pipenv install
+
+# Run the Gradio interface
+pipenv run python -m react_langchain_agent.interface.app
+```
+
+This will launch a web interface where you can:
+- Input text queries
+- See the agent's thought process
+- Get instant results
+- Try pre-defined examples
+
 ## Project Overview for Different Audiences
 
 ### For High School Students 🎓
@@ -150,6 +168,9 @@ react_langchain_agent/
 │       │   ├── __init__.py
 │       │   ├── agent.py          # Agent implementation
 │       │   └── prompts.py        # Prompt templates
+│       ├── interface/
+│       │   ├── __init__.py
+│       │   └── app.py            # Gradio web interface
 │       ├── tools/
 │       │   ├── __init__.py
 │       │   └── text_tools.py     # Tool implementations
@@ -159,7 +180,7 @@ react_langchain_agent/
 ├── tests/
 │   ├── __init__.py
 │   └── test_tools.py            # Tool tests
-├── main.py                      # Entry point
+├── main.py                      # CLI entry point
 ├── setup.py                     # Package configuration
 ├── Pipfile                      # Dependencies
 └── README.md                    # Documentation
@@ -192,15 +213,91 @@ AVAILABLE_TOOLS.append(custom_tool)
 
 ## Testing
 
-Run the tests using pytest:
+The project includes comprehensive test coverage through multiple test files:
+
+### Running Tests
 ```bash
-pipenv run pytest
+# Run all tests
+PYTHONPATH=$PYTHONPATH:$(pwd)/src pipenv run python test.py
+PYTHONPATH=$PYTHONPATH:$(pwd)/src pipenv run python test_interface.py
+
+# Or run individual test files:
+# Core agent tests
+pipenv run python test.py
+
+# Interface tests
+pipenv run python test_interface.py
 ```
 
-Current test coverage includes:
-- Tool functionality testing
-- Input validation
-- Edge case handling
+### Test Coverage
+
+1. **Core Agent Tests** (`test.py`):
+   - Settings validation
+   - Agent initialization
+   - Tool registration
+   - Query processing
+   - Error handling
+
+2. **Interface Tests** (`test_interface.py`):
+   - Process input function
+   - Gradio interface creation
+   - Component configuration
+   - Callback logging
+   - Token usage tracking
+
+### Test Output Examples
+
+The tests provide detailed output including:
+- Token usage statistics
+- Cost information
+- Agent's thought process
+- Response validation
+- Interface configuration
+
+Example test output:
+```
+Agent Execution Log:
+-------------------
+Total Tokens Used: 488
+- Prompt Tokens: 441
+- Completion Tokens: 47
+Total Cost (USD): $0.0003
+
+Thought Process:
+[Agent reasoning and steps]
+```
+
+## Monitoring and Logging
+
+### Callback System
+The project implements a comprehensive callback system that tracks:
+- Token usage
+- API costs
+- Agent's thought process
+- Execution time
+- Error states
+
+### Gradio Interface Logs
+The web interface displays:
+1. **Agent Response**: JSON-formatted output
+2. **Execution Log**:
+   - Token usage statistics
+   - Cost information
+   - Thought process
+   - Tool usage
+
+Example log output in the interface:
+```
+Agent Execution Log:
+-------------------
+Total Tokens Used: [count]
+- Prompt Tokens: [count]
+- Completion Tokens: [count]
+Total Cost (USD): $[amount]
+
+Thought Process:
+[Detailed reasoning steps]
+```
 
 ## Development
 
